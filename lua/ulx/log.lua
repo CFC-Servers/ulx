@@ -226,6 +226,11 @@ local function playerDeath( victim, weapon, killer )
 		elseif weapon == nil or not weapon:IsValid() then
 			ulx.logString( string.format( "%s killed %s", killer:Nick(), victim:Nick() ) )
 		elseif victim ~= killer then
+		    if weapon:IsPlayer() then
+		        local inflictor = weapon:GetActiveWeapon()
+		        if IsValid( inflictor ) then weapon = inflictor end
+            end
+
 			ulx.logString( string.format( "%s killed %s using %s", killer:Nick(), victim:Nick(), weapon:GetClass() ) )
 		else
 			ulx.logString( string.format( "%s suicided!", victim:Nick() ) )
