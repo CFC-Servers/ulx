@@ -255,18 +255,16 @@ function bans.init()
 	xgui.addCmd( "getbans", bans.sendBansToUser )
 
 	--Hijack the addBan function to update XGUI's ban info.
-	local banfunc = ULib.addBan
-	ULib.addBan = function( steamid, time, reason, name, admin )
-		banfunc( steamid, time, reason, name, admin )
+	hook.Add(ULib.HOOK_USER_BANNED, "ULXHandleBanChange", function(steamID, t)
 		bans.processBans()
 		
 		if timer.Exists( "xgui_unban" .. steamid ) then
 			timer.Remove( "xgui_unban" .. steamid )
 		end
-
+		
 		bans.unbanTimer()
-	end
-
+	end)
+	
 	--Hijack the unBan function to update XGUI's ban info.
 	local unbanfunc = ULib.unban
 	ULib.unban = function( steamid, admin )
