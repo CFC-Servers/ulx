@@ -254,7 +254,6 @@ function bans.init()
 	end
 	xgui.addCmd( "getbans", bans.sendBansToUser )
 
-	--Hijack the addBan function to update XGUI's ban info.
 	hook.Add(ULib.HOOK_USER_BANNED, "ULXHandleBanChange", function(steamid, t)
 		bans.processBans()
 		
