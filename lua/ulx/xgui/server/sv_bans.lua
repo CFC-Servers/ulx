@@ -259,6 +259,11 @@ function bans.init()
 	ULib.addBan = function( steamid, time, reason, name, admin )
 		banfunc( steamid, time, reason, name, admin )
 		bans.processBans()
+		
+		if timer.Exists( "xgui_unban" .. steamid ) then
+			timer.Remove( "xgui_unban" .. steamid )
+		end
+
 		bans.unbanTimer()
 	end
 
