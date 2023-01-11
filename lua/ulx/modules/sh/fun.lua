@@ -641,7 +641,6 @@ hook.Add( "PhysgunDrop", "ulxPlayerDropJailCheck", playerDrop )
 ------------------------------ Ragdoll ------------------------------
 function ulx.ragdollPlayer( v )
 	if v:InVehicle() then
-		local vehicle = v:GetParent()
 		v:ExitVehicle()
 	end
 
@@ -673,7 +672,7 @@ function ulx.ragdollPlayer( v )
 	v:SpectateEntity( ragdoll )
 	v:StripWeapons() -- Otherwise they can still use the weapons.
 
-	ragdoll:DisallowDeleting( true, function( old, new )
+	ragdoll:DisallowDeleting( true, function( _, new )
 		if v:IsValid() then v.ragdoll = new end
 	end )
 	v:DisallowSpawning( true )
