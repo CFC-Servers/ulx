@@ -353,6 +353,35 @@ local function plyColor( target_ply, showing_ply )
 	end
 end
 
+function ulx.makeLogStruct( ply )
+	local nick = ply:Nick()
+	local team = ply:Team()
+	local steamID = ply:SteamID()
+	local steamID64 = ply:SteamID64()
+	local isBot = ply:IsBot()
+	local entIndex = ply:EntIndex()
+
+	return setmetatable({
+		Nick = function() return nick end,
+		IsValid = function() return true end,
+		Team = function() return team end,
+		SteamID = function() return steamID end,
+		SteamID64 = function() return steamID64 end,
+	}, {
+		__tostring = function()
+			local thing = isBot and "Bot" or "Player"
+			return string.format( "%s [%s][%s]", thing, entIndex, nick )
+		end,
+
+		__eq = function(a, b)
+			if not a.SteamID then return false end
+			if not b.SteamID then return false end
+
+			return a:SteamID() == b:SteamID()
+		end
+	})
+end
+
 local function makePlayerList( calling_ply, target_list, showing_ply, use_self_suffix, is_admin_part )
 	local players = player.GetAll()
 	-- Is the calling player acting anonymously in the eyes of the player this is being showed to?
